@@ -1,45 +1,39 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
-#include <Geode/modify/PlayLayer.hpp>
-
 using namespace geode::prelude;
 
-class $modify(FatWomenLayer, MenuLayer) {
-    CCSprite* m_image;
-    CCLabelBMFont* m_counterLabel;
-    static int s_clickCount;
+int g_clickCount = 0;
+
+class $modify(FatWomenMenu, MenuLayer) {
+    CCSprite* m_fatImage;
+    CCLabelBMFont* m_clickLabel;
 
     bool init() override {
         if (!MenuLayer::init()) return false;
 
-        // Картинка
-        m_image = CCSprite::create("fatwoman.png"_spr);
-        if (m_image) {
-            m_image->setScale(0.4f);
-            this->addChild(m_image);
-            updatePos();
+        // Загружаем картинку
+        m_fatImage = CCSprite::create("fatwoman.png"_spr);
+        if (m_fatImage) {
+            m_fatImage->setScale(0.4f);
+            m_fatImage->setPosition(
+                Mod::get()->getSettingValue<double>("position-x"),
+                Mod::get()->getSettingValue<double>("position-y")
+            );
+            this->addChild(m_fatImage);
         }
 
-        // Счётчик
-        m_counterLabel = CCLabelBMFont::create("Clicks: 0", "bigFont.fnt");
-        m_counterLabel->setScale(0.5f);
-        m_counterLabel->setPosition({350, 50});
-        this->addChild(m_counterLabel);
+        // Счётчик кликов
+        m_clickLabel = CCLabelBMFont::create("Clicks: 0", "bigFont.fnt");
+        m_clickLabel->setScale(0.5f);
+        m_clickLabel->setPosition({350, 50});
+        this->addChild(m_clickLabel);
 
         return true;
     }
 
-    void updatePos() {
-        if (!m_image) return;
-        float x = Mod::get()->getSettingValue<double>("position-x");
-        float y = Mod::get()->getSettingValue<double>("position-y");
-        m_image->setPosition({x, y});
-    }
-
     void ccTouchBegan(CCTouch*, CCEvent*) override {
-        s_clickCount++;
-        m_counterLabel->setString(fmt::format("Clicks: {}", s_clickCount).c_str());
+        g_clickCount++;
+        m_clickLabel->setString(fmt::format("Clicks: {}", g_clickCount).c_str());
+        MenuLayer::ccTouchBegan(nullptr, nullptr); // вызываем оригинальный обработчик
     }
 };
-
-int FatWomenLayer::s_clickCount = 0;
