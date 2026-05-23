@@ -7,24 +7,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       
-      - name: Install Geode CLI
+      - name: Download Geode CLI
         run: |
-          wget https://github.com/geode-sdk/cli/releases/download/v3.0.0/geode-ubuntu-linux.zip
-          unzip geode-ubuntu-linux.zip
-          chmod +x geode
-          sudo mv geode /usr/local/bin/
+          curl -L -o geode.exe https://github.com/geode-sdk/cli/releases/download/v3.0.0/geode-windows.exe
       
       - name: Build mod
         run: |
-          geode sdk install
-          geode sdk install-binaries
-          geode build
+          ./geode.exe sdk install --yes
+          ./geode.exe sdk install-binaries --yes
+          ./geode.exe build
       
-      - name: Upload
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: fatwomen-mod
