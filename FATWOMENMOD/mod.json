@@ -1,26 +1,26 @@
 {
     "geode": "v3.0.0",
-    "id": "your.name.fatwomenmod",
-    "name": "FatWomenMod",
+    "id": "mr.snezhok.fatwomen",
+    "name": "FatWomen",
     "version": "v1.0.0",
-    "developer": "YourName",
-    "description": "Customizable image with click counter",
-    "binary": "fatwomenmod.geode",
+    "developer": "MrSnezhok",
+    "description": "Mod with image and click counter",
+    "binary": "fatwomen.geode",
     "resources": {
         "files": [
-            "resources/fatwoman.png"
+            "resources/*.png"
         ]
     },
     "settings": {
         "position-x": {
-            "name": "Image X",
+            "name": "Image X Position",
             "type": "number",
             "default": 100,
             "min": 0,
             "max": 400
         },
         "position-y": {
-            "name": "Image Y",
+            "name": "Image Y Position",
             "type": "number",
             "default": 100,
             "min": 0,
