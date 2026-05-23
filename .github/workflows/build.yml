@@ -7,21 +7,19 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/geode-sdk/build:latest
+      options: --user root
     
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Download Geode CLI
-        run: |
-          curl -L -o geode.exe https://github.com/geode-sdk/cli/releases/download/v3.0.0/geode-windows.exe
       
       - name: Build mod
         run: |
-          ./geode.exe sdk install --yes
-          ./geode.exe sdk install-binaries --yes
-          ./geode.exe build
+          geode sdk install latest
+          geode build
       
       - name: Upload artifact
         uses: actions/upload-artifact@v4
